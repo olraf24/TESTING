@@ -8,16 +8,39 @@ class Calculator {
     this.curroptext = curroptext;
     this.clear();
   }
-
+  
   clear() {
     this.prevop = "";
     this.currop = "";
+    supr = "";
     this.operation = undefined;
   }
 
   delete() {
     this.currop = this.currop.toString().slice(0, -1);
+    supr = supr.slice(0, -1);
   }
+
+
+
+
+  append2(number) {
+    // if (number === "." && this.supr.includes(".")) return;
+    supr = supr + number
+
+  }
+  apfunc() {
+    if (supr == "19+7+1985=")
+      // playHoverSound();
+      wywolaj();
+    else return;
+    
+
+  }
+
+
+
+
 
   appendNumber(number) {
     if (number === "." && this.currop.includes(".")) return;
@@ -39,6 +62,7 @@ class Calculator {
     let computation
     const prev = parseFloat(this.prevop)
     const current = parseFloat(this.currop)
+
     if (isNaN(prev) || isNaN(current)) return
     switch (this.operation) {
       case '+':
@@ -64,6 +88,7 @@ class Calculator {
     this.operation = undefined
     this.prevop = ''
   }
+
 
   getDisplayNumber(number) {
     // const stringNumber = number.toString();
@@ -120,6 +145,7 @@ const prevoptext = document.querySelector("[data-prev-op]");
 const curroptext = document.querySelector("[data-curr-op]");
 
 const calculator = new Calculator(prevoptext, curroptext);
+var supr = "";
 
 
 // numberButtons.addEventListener("click", myfunc);
@@ -168,6 +194,7 @@ function initAudioContext() {
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.appendNumber(button.innerText);
+    calculator.append2(button.innerText);
     calculator.updateDisplay();
   });
   button.addEventListener('click', playHoverSound);
@@ -186,6 +213,7 @@ function playHoverSound() {
 operationButtons.forEach(button => {
   button.addEventListener('click', () => {
   calculator.chooseOperation (button.innerText) 
+  calculator.append2(button.innerText);
   calculator.updateDisplay()
 
   })
@@ -195,7 +223,10 @@ operationButtons.forEach(button => {
 
 equalsButton.addEventListener('click', button => {
   calculator.compute()
+  calculator.append2('=');
+
   calculator.updateDisplay()
+  calculator.apfunc();
 
 
 })
@@ -213,3 +244,33 @@ deleteButton.addEventListener('click', button => {
 })
 
 
+
+
+function wywolaj() {
+  // Utwórz nowy element obrazu
+  const kalkulator = document.getElementById('frame');
+  kalkulator.style.display = 'none';
+
+  
+  const obrazek = document.createElement('img');
+
+  // Ustaw atrybuty obrazu (src, alt itp.)
+  obrazek.src = 'img-sup.jpg';
+  obrazek.alt = 'Opis obrazka';
+
+  // Dodaj styl (możesz dostosować styl według potrzeb)
+  obrazek.style.width = '286px'; 
+  obrazek.style.height = '528px';
+  obrazek.style.borderRadius = '33px';
+  obrazek.style.display = 'flex'
+  obrazek.style.margin = '0 auto';
+  obrazek.style.justifyContent = 'center';
+  obrazek.style.alignContent = 'center';
+  
+  
+
+
+
+  // Dodaj obrazek do ciała dokumentu (możesz dostosować miejsce docelowe)
+  document.body.appendChild(obrazek);
+}
