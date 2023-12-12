@@ -4,6 +4,9 @@
     box-sizing: border-box;
   }
    */
+body  {
+  background-color: black
+}
 
 #frame {
   width: 286px;
@@ -106,6 +109,7 @@
 
 #out {
   grid-column: 1/-1;
+
 
   display: flex;
   align-items: flex-end;

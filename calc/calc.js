@@ -128,18 +128,60 @@ const calculator = new Calculator(prevoptext, curroptext);
 //   document.getElementById("uniq").innerHTML = "Thdddddddd ";
 //   alert(numberButtons);
 // }
+// Inicjalizacja AudioContext
+// let audioContext;
+
+// // Inicjalizacja dźwięku
+// const hoverSound = new AudioBufferSourceNode(audioContext);
+// // ... załaduj dźwięk do hoverSound
+
+
+// // Dodanie węzła kompresora
+// const compressor = audioContext.createDynamicsCompressor();
+// compressor.threshold.value = -24;   // Wartość progowa (threshold) w dB
+// compressor.knee.value = 30;         // Szerokość obszaru soft-knee w dB
+// compressor.ratio.value = 12;        // Współczynnik kompresji
+// compressor.attack.value = 0.003;    // Czas ataku w sekundach
+// compressor.release.value = 0.25;    // Czas zwolnienia w sekundach
+
+// // Podłączenie węzła kompresora
+// hoverSound.connect(compressor);
+// compressor.connect(audioContext.destination);
+
+
+// // Dodanie obsługi zdarzenia kliknięcia dla startu AudioContext
+// document.addEventListener('click', initAudioContext);
+
+function initAudioContext() {
+  // Utwórz AudioContext, jeśli jeszcze nie został utworzony
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // Rozłącz obsługę zdarzenia po pierwszym kliknięciu, aby nie tworzyć wielu kontekstów
+  document.removeEventListener('click', initAudioContext);
+
+  // Odtwórz dźwięk
+  playHoverSound();
+}
 
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.appendNumber(button.innerText);
     calculator.updateDisplay();
-
-    
-    // document.getElementById("uniq").innerHTML = "Thdddddddd ";
-    // alert(numberButtons);
   });
+  button.addEventListener('click', playHoverSound);
 });
 
+function playHoverSound() {
+  // const maxVolume = 0.5;
+  hoverSound.currentTime = 0; // Ustaw czas odtwarzania na początku, aby umożliwić natychmiastowe odtworzenie dźwięku
+  // if (hoverSound.volume > maxVolume) {
+  //   hoverSound.volume = maxVolume;
+  // }
+  
+  hoverSound.play();
+}
 
 operationButtons.forEach(button => {
   button.addEventListener('click', () => {
@@ -147,6 +189,7 @@ operationButtons.forEach(button => {
   calculator.updateDisplay()
 
   })
+  button.addEventListener('mouseenter', playHoverSound);
 })
 
 
@@ -168,3 +211,5 @@ deleteButton.addEventListener('click', button => {
   calculator.delete()
   calculator.updateDisplay()
 })
+
+
